@@ -101,8 +101,8 @@ function GeneratorContent() {
     }
 
     return (
-        <div className="flex flex-col h-[calc(100vh-140px)] md:h-[calc(100vh-100px)]">
-            <div className="mb-4 flex items-center gap-2">
+        <div className="flex flex-col h-auto md:h-[calc(100vh-100px)]">
+            <div className="mb-4 flex items-center gap-2 flex-shrink-0">
                 <Link href="/app">
                     <Button variant="ghost" size="sm"><ArrowLeft className="w-4 h-4 mr-1" /> Voltar</Button>
                 </Link>
@@ -115,7 +115,7 @@ function GeneratorContent() {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 flex-1 min-h-0 relative">
                 {/* Loading Overlay */}
                 {loading && (
-                    <div className="absolute inset-0 z-50 flex flex-col items-center justify-center bg-background/60 backdrop-blur-[2px] rounded-xl transition-all duration-300">
+                    <div className="absolute inset-0 z-50 flex flex-col items-center justify-center bg-background/60 backdrop-blur-[2px] rounded-xl transition-all duration-300 fixed md:absolute inset-0 md:inset-auto">
                         <div className="relative">
                             <div className="absolute inset-0 bg-primary/20 blur-xl rounded-full animate-pulse"></div>
                             <Brain className="w-16 h-16 text-primary relative z-10 animate-bounce duration-[2000ms]" />
@@ -126,7 +126,7 @@ function GeneratorContent() {
                 )}
 
                 {/* Left Column: Form */}
-                <Card className="flex flex-col overflow-hidden h-full bg-card border-border">
+                <Card className="flex flex-col overflow-hidden h-[60vh] md:h-full bg-card border-border order-1">
                     <CardHeader className="py-4">
                         <CardTitle className="text-sm uppercase text-muted-foreground">Inputs</CardTitle>
                     </CardHeader>
@@ -146,11 +146,11 @@ function GeneratorContent() {
                 </Card>
 
                 {/* Right Column: Result */}
-                <div className="h-full">
+                <div className={`h-full order-2 ${!result ? 'h-[200px] md:h-full' : 'h-[500px] md:h-full'}`}>
                     <ResultViewer
                         result={result}
                         inputs={inputs}
-                        loading={false} // Loading handled by overlay now
+                        loading={false}
                         onClear={() => { setResult(null); setInputs({}); }}
                     />
                 </div>

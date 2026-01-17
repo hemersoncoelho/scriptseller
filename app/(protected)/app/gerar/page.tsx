@@ -1,7 +1,7 @@
 "use client";
 
 import { useSearchParams } from "next/navigation";
-import { useEffect, useState, Suspense } from "react";
+import { useEffect, useState, Suspense, useRef } from "react";
 import { TEMPLATES } from "@/lib/constants/templates";
 import { DynamicForm } from "@/components/features/DynamicForm";
 import { ResultViewer } from "@/components/features/ResultViewer";
@@ -51,6 +51,17 @@ function GeneratorContent() {
             }
         }
     }, [searchParams, templateId]);
+
+    const resultRef = useRef<HTMLDivElement>(null);
+
+    useEffect(() => {
+        if (result && resultRef.current) {
+            // Small timeout to ensure DOM update and smooth transition
+            setTimeout(() => {
+                resultRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+            }, 100);
+        }
+    }, [result]);
 
     const handleGenerate = async () => {
         if (!user || !template) return;
@@ -146,7 +157,7 @@ function GeneratorContent() {
                 </Card>
 
                 {/* Right Column: Result */}
-                <div className={`h-full order-2 ${!result ? 'h-[200px] md:h-full' : 'h-[500px] md:h-full'}`}>
+                <div ref={resultRef} className={`h-full order-2 transition-all duration-500 ${!result ? 'h-[200px] md:h-full' : 'h-[500px] md:h-full'}`}>
                     <ResultViewer
                         result={result}
                         inputs={inputs}

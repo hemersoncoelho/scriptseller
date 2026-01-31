@@ -5,6 +5,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Copy, Check, RotateCcw } from "lucide-react";
 import { useEffect, useState } from "react";
 import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
 import { toast } from "sonner";
 import { storage } from "@/lib/storage";
 
@@ -77,7 +78,27 @@ export function ResultViewer({ result, inputs, loading, onClear }: ResultViewerP
                     </div>
 
                     <TabsContent value="result" className="flex-1 p-4 overflow-y-auto prose dark:prose-invert max-w-none text-sm leading-relaxed text-foreground">
-                        <ReactMarkdown>{result}</ReactMarkdown>
+                        <ReactMarkdown
+                            remarkPlugins={[remarkGfm]}
+                            components={{
+                                table: ({ node, ...props }) => (
+                                    <div className="overflow-x-auto my-4 border rounded-lg">
+                                        <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400" {...props} />
+                                    </div>
+                                ),
+                                thead: ({ node, ...props }) => (
+                                    <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400" {...props} />
+                                ),
+                                th: ({ node, ...props }) => (
+                                    <th className="px-6 py-3" {...props} />
+                                ),
+                                td: ({ node, ...props }) => (
+                                    <td className="px-6 py-4 border-t dark:border-gray-600" {...props} />
+                                )
+                            }}
+                        >
+                            {result}
+                        </ReactMarkdown>
                     </TabsContent>
 
                     {devMode && (

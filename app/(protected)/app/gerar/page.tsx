@@ -82,7 +82,8 @@ function GeneratorContent() {
                 userId: user.email, // using email as ID for MVP
                 templateId: template.id,
                 inputs: inputs,
-                preferences: settings
+                preferences: settings,
+                title: template.displayName || template.name
             };
 
             const generatedText = await mockGenerate(payload);

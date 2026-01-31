@@ -53,4 +53,5 @@ export interface GeneratePayload {
   templateId: string;
   inputs: Record<string, any>;
   preferences: AppSettings;
+  title?: string;
 }
